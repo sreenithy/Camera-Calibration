@@ -11,3 +11,5 @@ There are two set of parameters that we need to find: intrinsic parameters and e
 **Intrinsic parameter computation**
 
 The calibrating object that we use is a Rubik’s cube. We image the cube as shown in figure below. We then obtain many 3D-2D point correspondences. In this part, we have already computed the point correspondences and all you have to do is to compute the intrinsic parameters from them.  The 3D-2D correspondences are given in the data file “pt_corres.mat”. This file contains “pts_2D”,  the 2D points and “cam_pts_3D”,  all the corresponding 3D points. Obtain the intrinsic parameter matrix K and enter in your report. Given: K has the following form:
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/tentative1%2C2.png "Tentative Correspondence between the reference image and the left image")
+
