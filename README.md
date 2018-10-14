@@ -14,10 +14,11 @@ There are two set of parameters that we need to find: intrinsic parameters and e
 **Intrinsic parameter computation**
 
 
-The calibrating object that we use is a Rubik’s cube. We image the cube as shown in figure below. We then obtain many 3D-2D point correspondences. In this part, we have already computed the point correspondences and all you have to do is to compute the intrinsic parameters from them.  The 3D-2D correspondences are given in the data file “pt_corres.mat”. This file contains “pts_2D”,  the 2D points and “cam_pts_3D”,  all the corresponding 3D points.Now we have to find the K matrix
+The calibrating object that we use is a Rubik’s cube.
 
-
-*K Matrix*
+We image the cube as shown in figure below. We then obtain many 3D-2D point correspondences. In this part, we have already computed the point correspondences and all you have to do is to compute the intrinsic parameters from them.  The 3D-2D correspondences are given in the data file “pt_corres.mat”. This file contains “pts_2D”,  the 2D points and “cam_pts_3D”,  all the corresponding 3D points.Now we have to find the K matrix
+![alt text](https://github.com/sreenithy/Camera-Calibration/blob/master/misc/a.png)
+**K Matrix**
 
 
 The matrix K which relates the 3D to the 2D points is an upper triangular matrix with the following shape.
@@ -51,9 +52,58 @@ The Discrete Linear Transorm(DLT) is simple linear algorithm for estimating the 
 The simplest such correspondence is that between a 3D point **X** and its image **x** under the unknown
 camera mapping. Given sufficiently many such correspondences the camera matrix may be determined.
 
-*Algorithm*
+**Algorithm**
 
 Let’s assume a number of point correspondences between 3D points and 2D image points are given. The
 camera matrix is a 3x4 matrix which relates the points by, xi = P.Xi For each correspondence Xi ↔ xi
 , we get three equations of which two are linearly independent and is described below
 
+
+**Steps**
+
+1. From a set of n point correspondences, we obtain a 2nx12 matrix A by stacking up the equations of the
+above form for each correspondence
+
+2. Obtain the SVD of A. The unit singular vector corresponding to the smallest singular value is the solution
+p. Specifically, if A = UDVT with D diagonal with positive diagonal entries, arranged in descending order
+down the diagonal, then p is the last column of V
+
+3. Obtain p and write it in matrix form to get the matrix P
+
+![alt text](https://github.com/sreenithy/Camera-Calibration/blob/master/misc/imageedit_5_5151063270.png )
+
+The projection matrix P is computed by solving the set of equations Ap = 0, where p is the vector containing
+the entries of the matrix P.
+
+
+**Minimum number of point correspondences needed for computing P**
+
+The 3x4 matrix P has 12 elements but the scale is arbitrary and therefore 11 degrees of freedom. Since each
+point correspondence gives 2 equations, at a minimum 5.5 such correspondences are required to solve for
+P. The 0.5 indicates that only one of the equations is used from the sixth point, that is we choose either the
+x-coordinate or the y-coordinate of the sixth image point.
+
+
+With this minimum number of correspondences, the solution is exact and is obtained by solving Ap = 0 where
+A is an 11x12 matrix in this case.
+
+
+If the data is not exact,the n ≥ 6 point correspondences are given, then there will not be an exact solution and
+we solve by minimizing an algebraic or geometric error.
+
+**Obtaining parameters K, R and t from the projection matrix P**
+
+The decomposition of P into K,R,t is done as by RQ decomposition. It involves calculating the decomposition A
+= R Q where Q is unitary/orthogonal and R upper triangular.
+
+**Verify the accuracy of the computed parameters**
+For this we will compute the re-projection error, which is a measure of the distance between the 2D points and the 2D points obtained by projecting the 3D points using the computed camera parameters.
+
+
+**References**
+
+
+[1] R. Hartley and A. Zissermann, Multiview geometry, 2nd edition, Cambridge University Press.
+
+
+[2] Z. Zhang. A flexible new technique for camera calibration. IEEE Transactions on Pattern Analysis and Machine Intelligence, 22(11):1330-1334, 2000.
