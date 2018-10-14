@@ -32,3 +32,28 @@ The relation between the 2D point (x, y) and the corresponding 3D point (X, Y, Z
 1. x = αx(X/Z) + s(Y/Z) + px 
 
 2. y = αy(Y/Z) + py
+
+**Intrinsic and extrinsic parameter computation**
+
+In the previous part, we have computed the intrinsic parameter assuming that the extrinsic parameters are known, i.e., we assumed that we know the 3D point correspondences in the camera coordinate system.  But this is rarely the case; almost always we know the 3D point correspondences only in the world coordinate system and hence we need to estimate both the intrinsic and extrinsic parameters. But before that we need to obtain the 3D-2D point correspondences. The 3D points are described with respect to a world coordinate system as shown in the figure 1. The figure shows the x,y and z axes of the world coordinate system along with some sample 3D points, which are the corners of the squares. There are 28 such points.
+
+1. The 3D points in the world coordinate system are provided in rubik_3D_pts.mat and the corresponding 2D points on the image are provided in rubik_2D_pts.mat
+
+2. Next we want to compute the camera projection matrix P = K[R t], where K is the internal/intrinsic calibration matrix, R is the rotation matrix which specifies the orientation of the camera coordinate system w.r.t the world coordinate system and t is the translation vector which species the location of the camera center in the world coordinate system.
+
+3. For computing P, the code is in the function “calibrate(x,X)” and is based on the “Direct Linear Transformation (DLT)"
+The DLT is an important algorithm to understand and is detailed below.
+
+**Discrete Linear Transform**
+
+The Discrete Linear Transorm(DLT) is simple linear algorithm for estimating the camera projection matrix
+**P** from corresponding 3-space and image entities. This computation of the camera matrix is known as resectioning.
+The simplest such correspondence is that between a 3D point **X** and its image **x** under the unknown
+camera mapping. Given sufficiently many such correspondences the camera matrix may be determined.
+
+*Algorithm*
+
+Let’s assume a number of point correspondences between 3D points and 2D image points are given. The
+camera matrix is a 3x4 matrix which relates the points by, xi = P.Xi For each correspondence Xi ↔ xi
+, we get three equations of which two are linearly independent and is described below
+
