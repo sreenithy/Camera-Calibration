@@ -97,6 +97,7 @@ The decomposition of P into K,R,t is done as by RQ decomposition. It involves ca
 = R Q where Q is unitary/orthogonal and R upper triangular.
 
 **Verify the accuracy of the computed parameters**
+
 For this we will compute the re-projection error, which is a measure of the distance between the 2D points and the 2D points obtained by projecting the 3D points using the computed camera parameters.
 ![alt text](https://github.com/sreenithy/Camera-Calibration/blob/master/misc/c.png "Plot of the given 2D points and the re-projected 2D points in the original figure of the Rubik’s cube,
 here the red circles denote the given 2D points and the green are the re-projected points")
